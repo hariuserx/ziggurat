@@ -39,6 +39,8 @@
                  [ring/ring-core "1.7.1"]
                  [ring/ring-defaults "0.3.2"]
                  [ring/ring-jetty-adapter "1.7.1"]
+                 [nginx-clojure "0.5.2"]
+                 [nginx-clojure/nginx-clojure-embed "0.5.2"]
                  [ring/ring-json "0.4.0"]
                  [ring-logger "0.7.7"]
                  [tech.gojek/sentry-clj.async "1.0.0" :exclusions [org.clojure/clojure]]
