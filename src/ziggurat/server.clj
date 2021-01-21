@@ -2,11 +2,11 @@
   (:require [clojure.tools.logging :as log]
             [cheshire.generate :refer [add-encoder encode-str]]
             [mount.core :as mount :refer [defstate]]
-            [ring.adapter.undertow :as ring]
+            [org.httpkit.server :as kit]
             [ziggurat.config :refer [ziggurat-config]]
             [ziggurat.server.routes :as routes])
   (:import (java.time Instant)
-           (io.undertow Undertow)))
+           (org.httpkit.server HttpServer)))
 
 (add-encoder Instant encode-str)
 
@@ -15,11 +15,11 @@
         port         (:port conf)
         thread-count (:thread-count conf)]
     (log/info "Starting server on port:" port)
-    (ring/run-undertow handler {:port                 port
-                                :worker-threads       thread-count})))
+    (kit/run-server handler {:port   port
+                             :thread thread-count})))
 
-(defn- stop [^Undertow server]
-  (.stop server)
+(defn- stop [^HttpServer server]
+  (kit/server-stop! server)
   (log/info "Stopped server"))
 
 (defstate server
