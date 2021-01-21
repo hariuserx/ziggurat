@@ -2,11 +2,10 @@
   (:require [clojure.tools.logging :as log]
             [cheshire.generate :refer [add-encoder encode-str]]
             [mount.core :as mount :refer [defstate]]
-            [org.httpkit.server :as kit]
+            [aleph.http :as http]
             [ziggurat.config :refer [ziggurat-config]]
             [ziggurat.server.routes :as routes])
-  (:import (java.time Instant)
-           (org.httpkit.server HttpServer)))
+  (:import (java.time Instant)))
 
 (add-encoder Instant encode-str)
 
@@ -15,11 +14,10 @@
         port         (:port conf)
         thread-count (:thread-count conf)]
     (log/info "Starting server on port:" port)
-    (kit/run-server handler {:port   port
-                             :thread thread-count})))
+    (http/start-server handler {:port   port})))
 
-(defn- stop [^HttpServer server]
-  (kit/server-stop! server)
+(defn- stop [server]
+  (.close server)
   (log/info "Stopped server"))
 
 (defstate server
