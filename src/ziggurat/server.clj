@@ -5,8 +5,8 @@
             [ring.adapter.undertow :as ring]
             [ziggurat.config :refer [ziggurat-config]]
             [ziggurat.server.routes :as routes])
-  (:import (org.eclipse.jetty.server Server)
-           (java.time Instant)))
+  (:import (java.time Instant)
+           (io.undertow Undertow)))
 
 (add-encoder Instant encode-str)
 
@@ -22,7 +22,7 @@
                                 :join?                false
                                 :send-server-version? false})))
 
-(defn- stop [^Server server]
+(defn- stop [^Undertow server]
   (.stop server)
   (log/info "Stopped server"))
 
