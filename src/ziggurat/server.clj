@@ -2,7 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [cheshire.generate :refer [add-encoder encode-str]]
             [mount.core :as mount :refer [defstate]]
-            [ring.adapter.jetty :as ring]
+            [ring.adapter.undertow :as ring]
             [ziggurat.config :refer [ziggurat-config]]
             [ziggurat.server.routes :as routes])
   (:import (org.eclipse.jetty.server Server)
@@ -15,11 +15,12 @@
         port         (:port conf)
         thread-count (:thread-count conf)]
     (log/info "Starting server on port:" port)
-    (ring/run-jetty handler {:port                 port
-                             :min-threads          thread-count
-                             :max-threads          thread-count
-                             :join?                false
-                             :send-server-version? false})))
+    (ring/run-undertow handler {:port                 port
+                                :min-threads          thread-count
+                                :max-threads          thread-count
+                                :worker-threads       thread-count
+                                :join?                false
+                                :send-server-version? false})))
 
 (defn- stop [^Server server]
   (.stop server)
