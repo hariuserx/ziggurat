@@ -16,11 +16,7 @@
         thread-count (:thread-count conf)]
     (log/info "Starting server on port:" port)
     (ring/run-undertow handler {:port                 port
-                                :min-threads          thread-count
-                                :max-threads          thread-count
-                                :worker-threads       thread-count
-                                :join?                false
-                                :send-server-version? false})))
+                                :worker-threads       thread-count})))
 
 (defn- stop [^Undertow server]
   (.stop server)
