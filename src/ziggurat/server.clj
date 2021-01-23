@@ -18,6 +18,8 @@
         thread-count (:thread-count conf)]
     (log/info "Starting server on port:" port)
     (http/start-server handler {:port     port
+                                :compression? true
+                                :compression-level 9
                                 :executor (flow/utilization-executor 1 thread-count
                                                                      {:metrics (EnumSet/of Stats$Metric/UTILIZATION)
                                                                       ;;:onto? false
